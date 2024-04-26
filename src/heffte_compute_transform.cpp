@@ -72,8 +72,8 @@ void compute_transform(typename backend::data_manipulator<location_tag>::stream_
         scalar_type *effective_input = output;
         if (input != output){
             add_trace name("copy");
-            if (executor[0] != nullptr)
-                backend::data_manipulator<location_tag>::copy_n(stream, input, batch_size * executor[0]->box_size(), temp_buffer);
+            int valid_executor = (executor[0] != nullptr) ? 0 : ((executor[1] != nullptr) ? 1 : 2);
+            backend::data_manipulator<location_tag>::copy_n(stream, input, batch_size * executor[valid_executor]->box_size(), temp_buffer);
             effective_input = temp_buffer;
         }
         for(int i=0; i<last; i++)
@@ -95,7 +95,8 @@ void compute_transform(typename backend::data_manipulator<location_tag>::stream_
             shaper[0]->apply(batch_size, input, temp_buffer, workspace);
         }else{
             add_trace name("copy");
-            backend::data_manipulator<location_tag>::copy_n(stream, input, batch_size * executor[0]->box_size(), temp_buffer);
+            int valid_executor = (executor[0] != nullptr) ? 0 : ((executor[1] != nullptr) ? 1 : 2); 
+            backend::data_manipulator<location_tag>::copy_n(stream, input, batch_size * executor[valid_executor]->box_size(), temp_buffer);
         }
         active_shaper = 1;
     }else{

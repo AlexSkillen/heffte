@@ -551,6 +551,10 @@ public:
     //! \brief Returns the size used by the communication workspace buffers (internal use).
     size_t size_comm_buffers() const{ return comm_buffer_offset; }
 
+    void nullify_executor(int i) {
+        executors[i].reset(nullptr);
+    }
+
 private:
     /*!
      * \brief Initialize the class using the provided plan and communicator.

@@ -1,3 +1,7 @@
+add_executable(heffte_example_mixed heffte_example_mixed.cpp)
+target_link_libraries(heffte_example_mixed Heffte)
+
+
 
 add_executable(heffte_example_r2r heffte_example_r2r.cpp)
 target_link_libraries(heffte_example_r2r Heffte)
